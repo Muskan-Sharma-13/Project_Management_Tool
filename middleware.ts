@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { redirectToSignIn } from "@clerk/nextjs/server";
 import { authMiddleware } from "@clerk/nextjs/server";
@@ -20,10 +19,9 @@ export default authMiddleware({
       const orgSelection = new URL("/select-org",req.url);
       return NextResponse.redirect(orgSelection);
     }
-  }
+  },
 });
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
