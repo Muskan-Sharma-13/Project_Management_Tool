@@ -6,6 +6,8 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateBoard } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 const handler =async(data:InputType):Promise<ReturnType>=>{
     const {userId,orgId}=auth();
     if(!userId|| !orgId){
@@ -40,6 +42,14 @@ const handler =async(data:InputType):Promise<ReturnType>=>{
                 imageLinkHTML,
             }
         });
+    
+    await createAuditLog({
+        entityTitle:board.title,
+        entityId:board.id,
+        entityType:ENTITY_TYPE.BOARD,
+        action:ACTION.CREATE,
+    });
+    
     }catch(error){
         return{
             error:"Failed to create."
