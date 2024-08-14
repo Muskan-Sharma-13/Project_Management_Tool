@@ -6,6 +6,10 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getAvailableCount } from "@/lib/org-limit";
+import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { checkSubscription } from "@/lib/subscription";
+
 export const BoardList=async()=>{
     const { orgId } = auth();
     if(!orgId){
@@ -19,6 +23,9 @@ export const BoardList=async()=>{
             createdAt:"desc"
         }
     });
+
+    const availableCount=await getAvailableCount();
+    const isPro=await checkSubscription();
 
     return(
         <div className="space-y-4">
@@ -50,7 +57,9 @@ export const BoardList=async()=>{
                 className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition">
                     <p className="text-sm">Create new board</p>
                     <span className="text-xs">
-                        5 remaining
+                        {isPro
+                        ?"Unlimited"
+                        :`${MAX_FREE_BOARDS-availableCount} remaining`}
                     </span>
                     <Hint
                     sideOffset={40}
