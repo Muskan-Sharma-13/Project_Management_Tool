@@ -60,7 +60,7 @@ export const FormPicker=({
             <div className="grid grid-cols-3 gap-2 mb-2">
                 {images.map((image)=>(
                     <div className={cn(
-                    "cursor-ointer relative aspect-video group hover:opacity-75 transition bg-muted",
+                    "cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted",
                     pending && "opacity-50 hover:opacity-50 cursor-auto")}
                     key={image.id}
                     onClick={()=>{
@@ -87,7 +87,8 @@ export const FormPicker=({
                             </div>
                         )}
                         <Link
-                        href="images.links.html"
+                        href={image.links.html}
+                        target="_blank"
                         className="opacity-0 group-hover:opacity-100 absolute bottom-0 w-full text-[10px] truncate text-white hover:underline p-1 bg-black/50">
                             {image.user.name}
                         </Link>
