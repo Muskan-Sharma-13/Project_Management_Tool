@@ -18,6 +18,7 @@ interface FormInputProps{
     className?:string;
     defaultValue?:string;
     onBlur?:()=>void;
+    errorPosition?:"below"|"beside";
 };
 
 export const FormInput = forwardRef<HTMLInputElement,FormInputProps>(({
@@ -30,11 +31,12 @@ export const FormInput = forwardRef<HTMLInputElement,FormInputProps>(({
     errors,
     className,
     defaultValue="",
-    onBlur
+    onBlur,
+    errorPosition="below"
 },ref)=>{
     const { pending }=useFormStatus();
     return(
-        <div className="space-y-2">
+        <div className={`space-y-2 ${errorPosition==="beside"? "flex items-center space-y-0" : ""}`}>
             <div className="space-y-1">
                 {label ? (
                     <Label
@@ -60,10 +62,20 @@ export const FormInput = forwardRef<HTMLInputElement,FormInputProps>(({
                 aria-describedby={`${id}-error`}
                 />
             </div>
-            <FormErrors
-            id={id}
-            errors={errors}
-            />
+            {errorPosition==="beside"
+            ?(<div className="ml-2">
+                <FormErrors
+                id={id}
+                errors={errors}
+                />
+            </div>)
+            :(<div>
+                <FormErrors
+                id={id}
+                errors={errors}
+                />
+            </div>)
+            }
         </div>
     )
 });

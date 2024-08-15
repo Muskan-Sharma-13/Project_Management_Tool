@@ -36,7 +36,7 @@ export const ListHeader=({
         setIsEditing(false);
     };
 
-    const { execute }=useAction(updateList,{
+    const { execute,fieldErrors }=useAction(updateList,{
         onSuccess:(data)=>{
             toast.success(`Renamed to "${data.title}"`);
             setTitle(data.title);
@@ -87,6 +87,7 @@ export const ListHeader=({
                     ref={inputRef}
                     onBlur={onBlur}
                     id="title"
+                    errors={fieldErrors}
                     placeholder="Enter list title"
                     defaultValue={title}
                     className="text-sm px-[7px] py-1 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-white"
